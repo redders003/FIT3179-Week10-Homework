@@ -2,7 +2,7 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "data": {
-        "url": "https://raw.githubusercontent.com/redders003/FIT3179-Week10-Homework/refs/heads/main/Updated_AusBoxOffice.csv",
+        "url": "https://raw.githubusercontent.com/redders003/FIT3179-Week10-Homework/refs/heads/main/Data/Updated_AusBoxOffice.csv",
         "format": {
             "type": "csv"
         }
