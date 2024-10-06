@@ -1,0 +1,202 @@
+
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "url": "https://raw.githubusercontent.com/redders003/FIT3179-Week10-Homework/refs/heads/main/Updated_AusBoxOffice.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    "vconcat": [
+        {
+            "width": 500,
+            "height": 250,
+            "title": {
+                "text": "Total Worldwide Box Office of Australian Films from 1979 - 2024"
+            },
+            "layer": [
+                {
+                    "mark": "bar",
+                    "encoding": {
+                        "x": {
+                            "field": "releaseYear",
+                            "type": "temporal",
+                            "timeUnit": "year",
+                            "scale": {
+                                "domain": {
+                                    "param": "brush"
+                                }
+                            },
+                            "axis": {
+                                "title": ""
+                            }
+                        },
+                        "y": {
+                            "field": "worldwideBoxOffice",
+                            "type": "quantitative",
+                            "axis": {
+                                "title": "Worlwide Box Office"
+                            }
+                        },
+                        "color": {
+                            "field": "numMoviesProduced",
+                            "type": "quantitative",
+                            "legend": {
+                                "title": "Number of Australian Films Produced in a Year",
+                                "titleLimit": 300
+                            }
+                        },
+                        "tooltip": [
+                            {
+                                "field": "worldwideBoxOffice",
+                                "type": "quantitative",
+                                "title": "Worldwide Box Office of Australian Films in USD",
+                                "format": "$,"
+                            },
+                            {
+                                "field": "releaseYear",
+                                "type": "temporal",
+                                "timeUnit": "year",
+                                "title": "Release Year"
+                            },
+                            {
+                                "field": "numMoviesProduced",
+                                "type": "quantitative",
+                                "title": "Number of Australian Films Produced"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "transform": [
+                        {
+                            "filter": {
+                                "param": "brush"
+                            }
+                        },
+                        {
+                            "calculate": "toNumber(datum.worldwideBoxOffice)",
+                            "as": "worldwideBoxOfficeNumeric"
+                        },
+                        {
+                          "calculate": "year(datetime(datum.releaseYear))",
+                          "as": "formattedYear"
+                        },
+                        {
+                            "window": [
+                                {
+                                    "op": "rank",
+                                    "as": "ranking"
+                                }
+                            ],
+                            "sort": [
+                                {
+                                    "field": "worldwideBoxOfficeNumeric",
+                                    "order": "descending"
+                                }
+                            ]
+                        },
+                        {
+                            "filter": "datum.ranking == 1"
+                        },
+                        {
+                            "calculate": "'The highest grossing; Australian film of ' + datum['formattedYear'] + ' is;' + datum['topGrossingMovie']",
+                            "as": "text_annotation_raw"
+                        },
+                        {
+                            "calculate": "split(datum.text_annotation_raw, ';')",
+                            "as": "text_annotation"
+                        },
+                        {
+                            "calculate": "datum.worldwideBoxOfficeNumeric > 100000000 ? 5 : -40",
+                            "as": "dy_adjustment"
+                        }
+                    ],
+                    "mark": {
+                        "type": "text",
+                        "align": "right",
+                        "dx": -5,
+                        "dy": {"expr": "datum.dy_adjustment"},
+                        "baseline": "middle",
+                        "fontStyle": "italic"
+                    },
+                    "encoding": {
+                        "x": {
+                            "field": "releaseYear",
+                            "type": "temporal",
+                            "timeUnit": "year",
+                            "scale": {
+                                "domain": {
+                                    "param": "brush"
+                                }
+                            }
+                        },
+                        "y": {
+                            "field": "worldwideBoxOffice",
+                            "type": "quantitative"
+                        },
+                        "text": {
+                            "field": "text_annotation"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "width": 500,
+            "height": 50,
+            "mark": "bar",
+            "params": [
+                {
+                    "name": "brush",
+                    "select": {
+                        "type": "interval",
+                        "encodings": [
+                            "x"
+                        ]
+                    }
+                }
+            ],
+            "encoding": {
+                "x": {
+                    "field": "releaseYear",
+                    "type": "temporal",
+                    "timeUnit": "year",
+                    "axis": {
+                        "title": "Release Year"
+                    }
+                },
+                "y": {
+                    "field": "worldwideBoxOffice",
+                    "type": "quantitative",
+                    "axis": {
+                        "title": "Worlwide Box Office"
+                    }
+                },
+                "color": {
+                    "field": "numMoviesProduced",
+                    "type": "quantitative"
+                },
+                "tooltip": [
+                    {
+                        "field": "worldwideBoxOffice",
+                        "type": "quantitative",
+                        "title": "Worldwide Box Office of Australian Films in USD",
+                        "format": "$,"
+                    },
+                    {
+                        "field": "releaseYear",
+                        "type": "temporal",
+                        "timeUnit": "year",
+                        "title": "Release Year"
+                    },
+                    {
+                        "field": "numMoviesProduced",
+                        "type": "quantitative",
+                        "title": "Number of Australian Films Produced"
+                    }
+                ]
+            }
+        }
+    ]
+}
