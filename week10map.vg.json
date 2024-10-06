@@ -170,7 +170,8 @@
                     "type": "temporal",
                     "timeUnit": "year",
                     "axis": {
-                        "title": "Release Year"
+                        "title": "",
+                        "tickCount": "year"
                     }
                 },
                 "y": {
