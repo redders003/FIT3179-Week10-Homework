@@ -1,6 +1,10 @@
 
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "config": {
+        "background": "#f5f5f5",
+        "title": {"font": "sans-serif", "fontSize": 14}
+    },
     "data": {
         "url": "https://raw.githubusercontent.com/redders003/FIT3179-Week10-Homework/refs/heads/main/Data/Updated_AusBoxOffice.csv",
         "format": {
@@ -9,7 +13,7 @@
     },
     "vconcat": [
         {
-            "width": 500,
+            "width": "container",
             "height": 250,
             "title": {
                 "text": "Total Worldwide Box Office of Australian Films from 1979 - 2024"
@@ -28,14 +32,17 @@
                                 }
                             },
                             "axis": {
-                                "title": ""
+                                "title": "",
+                                "tickCount": "year"
                             }
                         },
                         "y": {
                             "field": "worldwideBoxOffice",
                             "type": "quantitative",
                             "axis": {
-                                "title": "Worlwide Box Office"
+                                "title": "Worlwide Box Office (USD)",
+                                "format": ".2s",
+                                "labelExpr": "datum.value / 1e6 + 'M'"
                             }
                         },
                         "color": {
@@ -143,7 +150,7 @@
             ]
         },
         {
-            "width": 500,
+            "width": "container",
             "height": 50,
             "mark": "bar",
             "params": [
@@ -170,7 +177,9 @@
                     "field": "worldwideBoxOffice",
                     "type": "quantitative",
                     "axis": {
-                        "title": "Worlwide Box Office"
+                        "title": "Worlwide Box Office (USD)",
+                        "format": ".2s",
+                        "labelExpr": "datum.value / 1e6 + 'M'"
                     }
                 },
                 "color": {
